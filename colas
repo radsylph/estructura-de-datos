@@ -1,0 +1,109 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<limits.h>
+ struct nodo{
+	int data;
+	struct nodo* sig; 
+};
+
+ struct cola{
+	nodo *primero,*ultimo ;
+	
+};
+
+cola* crearcola(){
+	cola* ncola =(cola*)malloc(sizeof(struct cola));
+	ncola -> primero = NULL; 
+	ncola -> ultimo = NULL;
+	return ncola;
+}
+
+
+nodo* crearnodo(int data){
+	nodo* nuevonodo =(struct nodo*)malloc(sizeof(struct nodo));
+	nuevonodo ->data=data;
+	nuevonodo ->sig = NULL;
+	return nuevonodo;
+}
+
+void agregarnodo(int data, struct nodo** fila){
+	struct nodo* nuevo = crearnodo(data);
+	nuevo->sig =*fila;
+	*fila=nuevo;
+}
+
+int quitarnodo(struct nodo** fila){
+	struct nodo* primero =*fila;
+	int data = primero->data;
+	*fila =(*fila)->sig;
+	free(primero);
+	return data;
+}
+
+void consulta (struct nodo** fila){
+struct nodo* aux = *fila;
+if(fila ==NULL)
+	{
+		printf("la lista esta vacia");
+	}
+	else{
+	
+	while(aux){
+	printf("%d ,",aux->data);
+	aux=aux->sig;
+	printf("\n");
+	
+}
+}		
+}
+
+
+
+
+int main(){
+	struct nodo* fila = crearnodo(0);
+	int x,n,r;
+	do{
+	
+	printf("que quieres hacer \n");
+	printf("1.-agregar un elemento\n");
+	printf("2.-visualizar la cola\n");
+	printf("3.-salir del programa");
+	printf("\n---------------------\n\t");
+	scanf("%d",&x);
+	system("cls");
+	switch(x){
+		case 1:
+		printf("\n---------------------\n");
+ 		printf("ingreso de elemento:\n");
+		printf("cuantos elementos quiere agregar ?\n");
+		scanf("%d" ,&n);
+		system("cls");
+		for(int i=0;i<n; i++){
+			int nodo;
+			printf("ingrese el elemento numero %d\n" ,i+1);
+			scanf("%d" ,&nodo);
+			agregarnodo(nodo,&fila);	
+		}
+		system("cls");
+		break;
+		case 2:
+		for (int i = 0; i<n; i++){
+		consulta(&fila);
+		printf("se va %d\n" ,quitarnodo(&fila));
+		}
+		system("pause");
+		system("cls");
+		break;
+		case 3:
+		r=1;
+		break;
+		default:
+		printf("por favor eliga una opcion valida\n");
+		break;
+	}	
+	
+	}while (r==0);
+	return 0;
+	
+}
