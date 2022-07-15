@@ -3,24 +3,24 @@
 #include <string.h>
 
 
-typedef struct Nodo {
+typedef struct Nodo {//estructura de un nodo
 	char data[20];
 	char data2[20];
 	char data3[20];
 	struct Nodo* sig;
 } nodo;
-typedef struct Lista {
+typedef struct Lista {//estructura de una lista
 	Nodo* cabeza;
 	int longitud;
 } lista;
 
-struct Lista* crearlista(){
+struct Lista* crearlista(){//creacion de una lista
 	struct Lista* lista = (struct Lista*) malloc(sizeof(struct Lista));
 	lista->cabeza = NULL;
 	lista->longitud = 0;
 	return lista;
 }
-nodo* crearnodo(char *data , char *data2 ,char *data3){
+nodo* crearnodo(char *data , char *data2 ,char *data3){//creacion de un nodo
 	Nodo* nuevonodo = (Nodo*) malloc (sizeof (Nodo));
 	strncpy(nuevonodo->data, data, 20);
 	strncpy(nuevonodo->data2, data2, 20);
@@ -29,72 +29,39 @@ nodo* crearnodo(char *data , char *data2 ,char *data3){
 	return nuevonodo;
 }
 
-void agregarcomienzo(Lista* lista, char *data, char *data2,char *data3){
+void agregarcomienzo(Lista* lista, char *data, char *data2,char *data3){//agrega un nodo al comienzo de la lista
 	Nodo* nuevonodo = crearnodo(data, data2, data3);
 	nuevonodo->sig = lista->cabeza;
 	lista->cabeza = nuevonodo;
 	lista->longitud++;
 	}
-void agregarfinal(Lista* lista, char *data,char *data2, char *data3){
+void agregarfinal(Lista* lista, char *data,char *data2, char *data3){//agregar un nodo al final de la lista
 	Nodo*nuevonodo = crearnodo(data, data2, data3);
 	if (lista->cabeza == NULL) {
 		lista->cabeza = nuevonodo;
 	} else {
-Nodo* aux = lista->cabeza;
-	while (aux->sig){
-		aux = aux->sig;	
+			Nodo* aux = lista->cabeza;
+			while (aux->sig){
+			aux = aux->sig;	
 }
 aux->sig = nuevonodo;
 }
 lista->longitud++;
 }
-void colar(int n, Lista* lista, char *data,char *data2, char *data3){
-	n = n-1;
-	Nodo* nuevonodo = crearnodo(data,data2, data3);
-	if (lista->cabeza == NULL) {
-		lista->cabeza == nuevonodo;
-	} else {
-		Nodo* aux = lista->cabeza;
-		int posicion = 0;
-		while (posicion < n && aux->sig){
-			aux = aux->sig;
-			posicion++;
-		} if(posicion !=n){
-			printf("no se puede colar a un lugar que no existe");
-		}
-		nuevonodo->sig = aux->sig; 
-		aux->sig = nuevonodo; 
-	}
-	lista->longitud++;
-}
-void buscar(int n, Lista* lista){
-	if (lista->cabeza == NULL){
-		printf ("La lista esta vacia \n");
-	} else {
-			Nodo* aux = lista->cabeza;
-		int posicion = 0;
-		while (posicion < n && aux->sig){
-			aux = aux->sig;
-			posicion++;
-		}
-		if (posicion != n){
-			printf ("No se ha encontrado ningun empleado en esa direccion, intente de nuevo\n");
-		}else {
-		printf("%s\n",&aux->data);
-	}
-	}
-}
+
+ 
 
 
-void eliminarprimero(Lista* lista){
+void eliminarprimero(Lista* lista){//eliminar la cabeza de la lista
 	if(lista->cabeza){
 	Nodo* borrado = lista->cabeza;
 	lista->cabeza = lista->cabeza->sig;
 	free(borrado);
+	lista->longitud--;
 	printf ("Se ha eliminado el empleado de la lista\n");
 }  	
 }
-void eliminarultimo(Lista* lista){
+void eliminarultimo(Lista* lista){//eliminar el final de la lista
 	if(lista->cabeza){
 		if(lista->cabeza->sig) {
 		
@@ -105,39 +72,18 @@ void eliminarultimo(Lista* lista){
 		Nodo* borrado = aux->sig;
 		aux->sig=NULL;
 		free(borrado);
+		lista->longitud--;
 		printf ("Se ha eliminado el empleado de la lista\n");
-		
 		} else {
 		Nodo* borrado = lista->cabeza;
 		lista->cabeza = NULL;
 		free(borrado);
-		
+		lista->longitud--;
 		printf ("Se ha eliminado el empleado de la lista\n");
 		}
 		}
 }
-void eliminarcola(int n, Lista* lista){
-	if (lista->cabeza) {
-		if (n == 0) {
-			Nodo* borrado = lista->cabeza;
-			lista->cabeza = lista->cabeza->sig;
-			free(borrado);
-			
-			printf ("Se ha eliminado el empleado de la lista\n");
-		} else{
-			Nodo* aux = lista->cabeza;
-		int posicion = 0;
-		while(posicion < (n - 1)) {
-			aux = aux->sig;
-			posicion++;
-		}
-		Nodo* eliminado = aux->sig;
-		aux->sig = eliminado->sig;
-		free(eliminado);	
-		printf ("Se ha eliminado el empleado de la lista\n");
-		}
-	}
-}
+
 void consulta(Lista* lista){
 	if (lista->cabeza == NULL){
 		printf("\n La lista se encuentra vacia \n");
@@ -176,7 +122,6 @@ int main(){
  			printf("ingreso de elemento:\n");
  			printf("1.-ingresar un elemento en el principio\n");
  			printf("2.-ingresar un elemento en el final\n");
- 			printf("3.-colar un elemento en cualquier posicion\n\t");
  			
  			scanf("%d" ,&menu2);
  			system("cls");
@@ -205,24 +150,7 @@ int main(){
  					scanf("%s" ,&data3);
  					agregarfinal(lista, data , data2, data3);
  					break;
- 				case 3:
- 					int n;
- 					printf("\n---------------\n");
- 					printf("ingrese el nombre del trabajador\n\t");
- 					scanf("%s" ,&data);
- 					printf("\n---------------");
- 					printf("\ningrese el puesto del trabajador\n\t");
- 					scanf("%s" ,&data2);
- 					printf("\n---------------");
- 					printf("\ningrese la hora de llegada del trabajador\n\t");
- 					scanf("%s" ,&data3);
- 					printf("\n---------------");
- 					printf("\ningrese la posicion en la que lo quiere colocar\n\t");
- 					scanf("%s" ,&n);
- 					colar(n,lista, data , data2, data3);
- 					break;
- 			
-					
+ 				
  				default:
  					printf("por favor eliga una opcion valida\n");
  				break;
@@ -236,7 +164,6 @@ int main(){
  			printf("ingreso de elemento:\n");
  			printf("1.-borrar un elemento en el principio\n");
  			printf("2.-borrar un elemento en el final\n");
- 			printf("3.-borrar un elemento en cualquier posicion\n\t");
  			scanf("%d" ,&menu3);
  			switch(menu3){
  				case 1:
@@ -245,15 +172,10 @@ int main(){
  				  case 2:
  				   eliminarultimo(lista);
  				   break;
- 				    case 3:
- 				    int n;
- 				    printf("&introdusca la posicion que quiere borrar\n");
- 				    scanf("%d" ,&n);
- 				    eliminarcola(n,lista);
- 				     break;
  					  default:
  						printf("opcion invalida\n");
  						 break;
+ 						 
 			 }
  			
  			break;
