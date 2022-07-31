@@ -1,0 +1,143 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct {
+	int clave;
+}item;
+
+typedef struct elemento{
+	item dato;
+	struct elemento *padre, *izq, *der;
+}nodo;
+ 
+ typedef struct {
+ 	nodo *raiz;
+ }arbol;
+ 
+ nodo* crearnodo(item x){
+ 	nodo *nuevonodo = malloc(sizeof(nodo));
+ 	nuevonodo->dato = x;
+ 	nuevonodo->padre= NULL;
+ 	nuevonodo->izq = NULL;
+ 	nuevonodo->der = NULL;
+ 	return nuevonodo;
+ }
+ 
+ void inicializararbol(arbol *arb){
+ 	arb ->raiz = NULL;
+ }
+ 
+ void mostrarnodo(nodo *v){
+ 	printf("Nodo %d = ",v->dato.clave);
+ 	if(v->padre != NULL){printf("padre :%d\n",v->padre->dato.clave);}
+ 	else{printf("padre : ninguno");}
+ 	if(v->izq != NULL){printf("rama izquierda; %d\n", v->izq->dato.clave);}
+ 	else{printf("rama izquierda: ninguna");}
+ 	if(v->der != NULL){printf("rama derecha: %d\n", v->der->dato.clave);}
+ 	else{printf("rama derecha: ninguna");}
+ 	
+ }
+ 
+ void mostrararbol(nodo *nodo, char cad[]){
+ 	printf("%d\n", nodo->dato.clave);
+ 	
+ 	//para la rama izquierda
+ 	if(nodo->izq!= NULL){
+ 		char cad2[1000]; strcpy(cad2,cad);
+ 		if(nodo->der!=NULL){
+ 			printf("%s%c%c%c%c%c" ,cad,195,196,196,196,196);
+ 			char simb = 179, aux[2];
+ 			aux[0] = simb;
+ 			aux[1] ='\0';
+ 			strcat(cad2, "    ");
+ 			mostrararbol(nodo->izq,cad2);
+		 }
+		 else{
+		 	printf("%s%c%c%c%c%c" ,cad,192,196,196,196,196);
+		 	strcat(cad2 , "     ");
+		 	mostrararbol(nodo->izq, cad2);
+		 }
+	 }
+	 if(nodo->der!=NULL){
+	 	char cad3 [1000];
+	 	strcpy(cad3,cad);
+	 	printf("%s%c%c%c%c%c" ,cad,192,196,196,196,196);
+	 	strcat(cad3,"   ");
+	 	mostrararbol(nodo->der,cad3);
+	 
+	 }
+ }
+ void visualizararbol(arbol arb){
+ 	if(arb.raiz == NULL){printf("el arbol esta vacio\n");}
+ 	else mostrararbol(arb.raiz , "");
+ }
+ 
+ int main(){
+ 	arbol arb;
+ 	inicializararbol(&arb);
+ 	
+ 	item x;
+ 	nodo *nodo1,*nodo2,*nodo3,*nodo4,*nodo5,*nodo6;
+ 	x.clave=5; nodo1 = crearnodo(x); arb.raiz=nodo1;
+ 	x.clave=100; nodo2 = crearnodo(x); nodo1->izq = nodo2; nodo2 ->padre = nodo1;
+ 	x.clave=3; nodo3 = crearnodo(x); nodo3->padre = nodo1; nodo1->der = nodo3;
+ 	x.clave=20; nodo4 =crearnodo(x); nodo4->padre =nodo2; nodo2->izq = nodo4;
+ 	x.clave=25; nodo5= crearnodo(x); nodo5->padre =nodo2; nodo2->der = nodo5;
+ 	x.clave=7; nodo6=crearnodo(x); nodo6->padre = nodo4; nodo4->izq = nodo6;
+ 	int opcion,n,n2,respuesta;
+ 	
+ 	do {
+	 
+ 	printf("que quieres hacer ?\n");
+ 	printf("1. visualizar el arbol\n");
+ 	printf("2. ver informacion de un nodo\n");
+ 	scanf("%d" ,&opcion);
+ 	switch(opcion){
+ 		case 1:
+ 		printf("el arbol es :\n");
+ 		visualizararbol(arb);
+ 		break;
+ 		case 2:
+ 		printf("ingresa el nodo que quieres ver\n");
+ 		scanf("%d" ,&n);
+ 		if (n == 1)
+ 		{
+ 			mostrarnodo(nodo1);
+		 }
+		if(n== 2)
+		{
+		mostrarnodo(nodo2);	
+		}
+		if(n==3){
+			mostrarnodo(nodo3);
+		}
+		if(n==4){
+			mostrarnodo(nodo4);
+		}
+		if(n==5){
+		mostrarnodo(nodo5);
+		}
+		if(n==6){
+			mostrarnodo(nodo6);
+		}
+		else{
+			printf("ingrese un nod valido\n");
+		}
+ 		break;
+ 		default:
+ 			printf("por favor ingrese una opcion valida");
+ 		break;	
+	 }
+ 
+	 printf("quieres salir del programa \n");
+ 		printf("1 = si\n");
+ 		printf("0 = no\n");
+ 		scanf("%d" ,&respuesta);
+		system("cls");
+	 }while(respuesta==0);
+ 	
+ 	
+ 	
+ 	return 0;
+ }
